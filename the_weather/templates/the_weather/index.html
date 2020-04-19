@@ -7,6 +7,7 @@
     {% load static %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'the_weather/style.css' %}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
 
 </head>
 
@@ -23,7 +24,7 @@
             </div>
 
             <div class="btn-block">
-                <button type="submit" href="{% url 'the_weather:home' %}">Submit</button>
+                <button type="submit" href="{% url 'the_weather:home' %}">Search</button>
             </div>
         </div>
     </form>

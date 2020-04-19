@@ -8,7 +8,7 @@
 
 body
 {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   overflow: hidden;
   background: #d22222;;
 }
@@ -40,7 +40,8 @@ div.input
 }
 
 div.search {
-  display: inline-block;
+  font-family: 'Quicksand', sans-serif;
+
   position: fixed;
   padding: 5px 10px;
   border-radius: 5px;
@@ -71,9 +72,10 @@ div.city
 
 div.temp
 {
-  font-size: 81px;
+  font-size: 75px;
   color: rgba(0,0,0,0.9);
   font-weight: 100;
+
 }
 
 div.panel

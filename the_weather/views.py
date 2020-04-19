@@ -7,15 +7,16 @@ def index(request):
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=d2ad988e3aea888bca35fc4b05349dd6'
     # datetime module is a class, x is its object
     x = datetime.now()
-    default_city = 'Chennai'
 
-    city = ""
 
     if request.method == "POST":
+        # an empty string
+        city = ""
+        # getting name key from request.POST data
         name = request.POST['name']
         city += name
 
-        # response object 'r'
+        # response object 'r', .json is for json decoding for dealing with JSON data
         r = requests.get(url.format(city)).json()
 
         city_weather = {
@@ -30,6 +31,7 @@ def index(request):
         return render(request, 'the_weather/index.html', context=context)
 
     else:
+        default_city = 'Chennai'
         r = requests.get(url.format(default_city)).json()
 
         city_weather = {
