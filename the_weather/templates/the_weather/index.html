@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'the_weather/style.css' %}"/>
+
+</head>
+
+
+<body>
+
+    <!-- form input-->
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="input">
+            <div class="search">
+                <input type="text" name="name" id="name" placeholder="City name" required/>
+            </div>
+
+            <div class="btn-block">
+                <button type="submit" href="{% url 'the_weather:home' %}">Submit</button>
+            </div>
+        </div>
+    </form>
+    <!--weather widget-->
+    <div class="widget">
+
+        <div class="left-panel panel">
+            <div class="date">
+                {{ city_weather.date_time }}
+            </div>
+            <div class="city">
+                {{ city_weather.city }}
+            </div>
+            <div class="temp">
+               <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="" width="60">
+               {{ city_weather.temperature }}&deg;
+            </div>
+        </div>
+        <div class="right-panel panel">
+            {{ city_weather.description }}
+        </div>
+
+    </div>
+
+
+</body>
+</html>
