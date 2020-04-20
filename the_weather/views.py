@@ -19,10 +19,12 @@ def index(request):
         # response object 'r', .json is for json decoding for dealing with JSON data
         r = requests.get(url.format(city)).json()
 
+        # context to be rendered, and used in the template tags, [0] denotes first element of weather list
         city_weather = {
             'date_time': x,
             'city': city,
             'temperature': r['main']['temp'],
+            'max_temp': r['main']['temp_max'],
             'description': r['weather'][0]['description'],
             'icon': r['weather'][0]['icon'],
         }
@@ -38,6 +40,7 @@ def index(request):
             'date_time': x,
             'city': default_city,
             'temperature': r['main']['temp'],
+            'max_temp': r['main']['temp_max'],
             'description': r['weather'][0]['description'],
             'icon': r['weather'][0]['icon'],
         }
