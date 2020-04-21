@@ -14,49 +14,48 @@
 
 <body>
 
-
-
-    <!-- form input-->
-    <form method="post">
+    <!-- search place form-->
+    <form action="{% url 'the_weather:home' %}" method="post">
         {% csrf_token %}
 
         <div class="input">
             <div class="search">
                 <input type="text" name="name" id="name" placeholder="City name" required/>
+                {{ form.name }}
             </div>
 
             <div class="btn-block">
-                <button type="submit" href="{% url 'the_weather:home' %}">Search</button>
+                <button type="submit" name="action">Add</button>
             </div>
         </div>
     </form>
     <!--weather widget-->
-    <div class="widget">
+    {% for city in weather_list %}
+        <div class="widget">
 
-        <div class="left-panel panel">
-            <div class="date">
-                {{ city_weather.date_time }}
+            <div class="left-panel panel">
+                <div class="city">
+                    {{ city.city }}
+                </div>
+                <div class="temp">
+                   <img src="http://openweathermap.org/img/w/{{ city.icon }}.png" alt="" width="60">
+                   {{ city.temperature }}&deg;
+                </div>
             </div>
-            <div class="city">
-                {{ city_weather.city }}
+            <div class="right-panel panel">
+                <div class="description">
+                    {{ city.description }}
+                </div>
+
             </div>
-            <div class="temp">
-               <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="" width="60">
-               {{ city_weather.temperature }}&deg;
-            </div>
+
         </div>
-        <div class="right-panel panel">
-            <div class="description">
-                {{ city_weather.description }}
-            </div>
+    {% endfor %}
 
-            <div class="max-temp">
-                Max temp {{ city_weather.max_temp }}&deg;
-            </div>
-        </div>
-
+    <div>
+        {% for message in messages %}
+            <h4> {{ message }} </h4>
+        {% endfor %}
     </div>
-
-
 </body>
 </html>

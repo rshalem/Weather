@@ -16,9 +16,9 @@ body
 div.widget
 {
   position: relative;
-  width: 355px;
-  height: 125px;
-  margin: 150px auto;
+  width: 300px;
+  height: 80px;
+  margin: 20px auto;
   background-color: antiquewhite;
   border-radius: 9px;
   padding: 25px;
@@ -29,9 +29,9 @@ div.widget
 div.input
 {
   position: relative;
-  width: 355px;
+  width: 300px;
   height: 25px;
-  margin: 150px auto;
+  margin: 60px ;
   background-color: antiquewhite;
   border-radius: 9px;
   padding: 25px;
@@ -48,10 +48,11 @@ div.search {
   box-shadow: 1px 2px 5px rgba(0,0,0,.09);
   color: black;
   text-align: center;
-}
-div.left-panel
-{
 
+
+}
+div.left-panel {
+    float: left;
 }
 
 div.date
@@ -66,13 +67,14 @@ div.city
   font-size: 21px;
   font-weight: lighter;
   text-transform: uppercase;
+  margin-top: -10px;
   padding-top: 5px;
   color: rgba(0,0,0,0.7);
 }
 
 div.temp
 {
-  font-size: 75px;
+  font-size: 50px;
   color: rgba(0,0,0,0.9);
   font-weight: 100;
 
@@ -83,13 +85,15 @@ div.panel
   display: inline-block;
 }
 
+
 div.right-panel{
   position: absolute;
   float: right;
   top: 0;
-  margin-top: 35px;
+  margin-top: 20px;
   padding-left: 10px;
 }
+
 
 .btn-block {
     margin-top: 10px;

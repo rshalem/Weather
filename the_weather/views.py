@@ -1,49 +1,42 @@
 import requests
-from django.shortcuts import render
-from datetime import datetime
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import City
+from .forms import CityForm
 
-# Create your views here.
 def index(request):
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=d2ad988e3aea888bca35fc4b05349dd6'
     # datetime module is a class, x is its object
-    x = datetime.now()
 
+    # if that object is already created in the database then return already created
+    # if not, create that object
 
     if request.method == "POST":
-        # an empty string
-        city = ""
-        # getting name key from request.POST data
-        name = request.POST['name']
-        city += name
+        # if object exists with name = requested POST data ['name'] key
+        if City.objects.filter(name=request.POST['name']).exists():
+            messages.info(request,'City already exists')
+            return redirect('the_weather:home')
+        else:
+            form = CityForm(request.POST)
+            form.save()
 
-        # response object 'r', .json is for json decoding for dealing with JSON data
+
+    all_city = City.objects.all()
+    weather_list = []
+    for city in all_city:
         r = requests.get(url.format(city)).json()
 
-        # context to be rendered, and used in the template tags, [0] denotes first element of weather list
         city_weather = {
-            'date_time': x,
             'city': city,
             'temperature': r['main']['temp'],
-            'max_temp': r['main']['temp_max'],
             'description': r['weather'][0]['description'],
             'icon': r['weather'][0]['icon'],
         }
 
-        context = {'city_weather': city_weather}
-        return render(request, 'the_weather/index.html', context=context)
+        # appending city weather for all the city objects to a list
+        # so that we can display that list on the homepage
 
-    else:
-        default_city = 'Chennai'
-        r = requests.get(url.format(default_city)).json()
-
-        city_weather = {
-            'date_time': x,
-            'city': default_city,
-            'temperature': r['main']['temp'],
-            'max_temp': r['main']['temp_max'],
-            'description': r['weather'][0]['description'],
-            'icon': r['weather'][0]['icon'],
-        }
-
-        context = {'city_weather': city_weather}
-        return render(request, 'the_weather/index.html', context=context)
+        weather_list.append(city_weather)
+    form = CityForm()
+    context = {'weather_list': weather_list}
+    return render(request, 'the_weather/index.html', context=context)
