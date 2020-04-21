@@ -20,7 +20,7 @@ def index(request):
             form = CityForm(request.POST)
             form.save()
 
-
+    # else display all saved city weather
     all_city = City.objects.all()
     weather_list = []
     for city in all_city:
@@ -40,3 +40,10 @@ def index(request):
     form = CityForm()
     context = {'weather_list': weather_list}
     return render(request, 'the_weather/index.html', context=context)
+
+
+def delete(request, city_name):
+    City.objects.get(name=city_name).delete()
+    return redirect('the_weather:home')
+
+

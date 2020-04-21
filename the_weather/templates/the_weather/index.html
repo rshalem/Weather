@@ -7,6 +7,7 @@
     {% load static %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'the_weather/style.css' %}"/>
+
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
 
 </head>
@@ -46,7 +47,7 @@
                 <div class="description">
                     {{ city.description }}
                 </div>
-
+                <a href="{% url 'the_weather:delete' city.city %}"> Delete </a>
             </div>
 
         </div>
