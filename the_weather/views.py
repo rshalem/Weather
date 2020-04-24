@@ -1,5 +1,4 @@
 import requests
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import City
@@ -13,17 +12,20 @@ def index(request):
 
         form = CityForm(request.POST)
 
-        if form.is_valid():
-            new_city = form.cleaned_data['name']
-            r = requests.get(url.format(new_city)).json()
-            if r['cod'] == 200:
-                if City.objects.filter(name=new_city).exists():
-                    messages.info(request, 'City exists')
-                else:
-                    form.save()
-                    return redirect('the_weather:home')
+        # if form.is_valid():
+        new_city = request.POST['name']
+        r = requests.get(url.format(new_city)).json()
+        # city is a match, success 200
+        if r['cod'] == 200:
+            if City.objects.filter(name=new_city).exists():
+                messages.info(request, 'City exists')
             else:
-                messages.info(request, 'Invalid City')
+                form.save()
+                return redirect('the_weather:home')
+
+        # if city is not a valid city
+        else:
+            messages.info(request, 'Invalid City')
 
     # else display all saved city weather
     all_city = City.objects.all()
