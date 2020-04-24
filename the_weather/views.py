@@ -1,4 +1,5 @@
 import requests
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import City
@@ -8,20 +9,26 @@ def index(request):
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=d2ad988e3aea888bca35fc4b05349dd6'
     # datetime module is a class, x is its object
 
-    # if that object is already created in the database then return already created
-    # if not, create that object
-
     if request.method == "POST":
-        # if object exists with name = requested POST data ['name'] key
-        if City.objects.filter(name=request.POST['name']).exists():
-            messages.info(request,'City already exists')
-            return redirect('the_weather:home')
-        else:
-            form = CityForm(request.POST)
-            form.save()
+
+        form = CityForm(request.POST)
+
+        if form.is_valid():
+            new_city = form.cleaned_data['name']
+            r = requests.get(url.format(new_city)).json()
+            if r['cod'] == 200:
+                if City.objects.filter(name=new_city).exists():
+                    messages.info(request, 'City exists')
+                else:
+                    form.save()
+                    return redirect('the_weather:home')
+            else:
+                messages.info(request, 'Invalid City')
 
     # else display all saved city weather
     all_city = City.objects.all()
+
+    # adding all cities with weather deatil to this list
     weather_list = []
     for city in all_city:
         r = requests.get(url.format(city)).json()
@@ -35,9 +42,11 @@ def index(request):
 
         # appending city weather for all the city objects to a list
         # so that we can display that list on the homepage
-
         weather_list.append(city_weather)
+
+    # if request is GET
     form = CityForm()
+
     context = {'weather_list': weather_list}
     return render(request, 'the_weather/index.html', context=context)
 
