@@ -29,6 +29,12 @@
                 <button type="submit" name="action">Add</button>
             </div>
         </div>
+    <!-- to display errors -->
+        <div>
+            {% for message in messages %}
+                <h4> {{ message }} </h4>
+            {% endfor %}
+        </div>
     </form>
     <!--weather widget-->
     {% for city in weather_list %}
@@ -53,10 +59,5 @@
         </div>
     {% endfor %}
 
-    <div>
-        {% for message in messages %}
-            <h4> {{ message }} </h4>
-        {% endfor %}
-    </div>
 </body>
 </html>

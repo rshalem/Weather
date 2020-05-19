@@ -10,27 +10,26 @@ def index(request):
 
     if request.method == "POST":
 
-        form = CityForm(request.POST)
-
         # if form.is_valid():
         new_city = request.POST['name']
         r = requests.get(url.format(new_city)).json()
-        # city is a match, success 200
+        # city is a match, success 200, checking it in the response 'r' obj
         if r['cod'] == 200:
             if City.objects.filter(name=new_city).exists():
                 messages.info(request, 'City exists')
             else:
+                form = CityForm(request.POST)
                 form.save()
                 return redirect('the_weather:home')
 
-        # if city is not a valid city
+        # if city is not a valid city( ie cod = 404)
         else:
             messages.info(request, 'Invalid City')
 
     # else display all saved city weather
     all_city = City.objects.all()
 
-    # adding all cities with weather deatil to this list
+    # adding all cities with weather detail to this list
     weather_list = []
     for city in all_city:
         r = requests.get(url.format(city)).json()
@@ -43,7 +42,7 @@ def index(request):
         }
 
         # appending city weather for all the city objects to a list
-        # so that we can display that list on the homepage
+        # so that we can display that list on the homepage, BY LOOPING OVER IN INDEX.HTML
         weather_list.append(city_weather)
 
     # if request is GET
